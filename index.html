@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vendor Coverage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #F4F6F8;
+      --surface: #ffffff;
+      --text: #1a1f2e;
+      --text-secondary: #5c6578;
+      --text-tertiary: #8b93a3;
+      --border: #dde2ea;
+      --grey-50: #fafbfc;
+      --grey-100: #eef1f5;
+      --grey-200: #e2e7ee;
+      --success: #2E7D32;
+      --warning: #F57C00;
+      --error: #D32F2F;
+      --primary: #1B4F8A;
+      --secondary: #00A0DC;
+      --primary-soft: rgba(27, 79, 138, 0.08);
+      --fraud-accent: #cf222e;
+      --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --radius: 8px;
+      --radius-sm: 6px;
+      --shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Stage shell ─────────────────────────────────────────────────── */
+
+    .shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: var(--space-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      min-height: 100vh;
+    }
+
+    .full-width { width: 100%; }
+
+    .stage-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-5);
+      flex-wrap: wrap;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-5);
+      box-shadow: var(--shadow);
+    }
+
+    .stage-eyebrow {
+      margin: 0 0 6px;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--fraud-accent);
+    }
+
+    .posture-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: stretch;
+      min-width: 280px;
+    }
+
+    .summary-stat {
+      background: var(--grey-50);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      min-width: 88px;
+    }
+
+    .summary-stat-label {
+      display: block;
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .summary-stat-value {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .summary-stat-value.covered { color: var(--success); }
+    .summary-stat-value.partial { color: var(--warning); }
+    .summary-stat-value.gap { color: var(--error); }
+    .summary-stat-value.neutral { color: var(--primary); }
+
+    .summary-stat-wide {
+      flex: 1 1 180px;
+      min-width: 180px;
+    }
+
+    .bundle-rail {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-3) var(--space-4);
+      box-shadow: var(--shadow);
+    }
+
+    .bundle-rail-inner {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .bundle-rail-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .bundle-rail-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
+
+    .bundle-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--space-3);
+    }
+
+    .bundle-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+      transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
+    }
+
+    .bundle-card:hover {
+      border-color: #b8c0cc;
+      background: var(--grey-50);
+    }
+
+    .bundle-card.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .bundle-card-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .bundle-card-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .bundle-card-tag {
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary);
+      background: rgba(27, 79, 138, 0.12);
+      padding: 2px 6px;
+      border-radius: 999px;
+    }
+
+    .bundle-card-market {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .bundle-card-blurb {
+      margin: 0;
+      font-size: 0.75rem;
+      line-height: 1.45;
+      color: var(--text-secondary);
+    }
+
+    .bundle-clear-inline {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px dashed var(--border);
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    .bundle-clear-inline:hover {
+      border-color: #b8c0cc;
+      color: var(--text);
+    }
+
+    .stage-workspace {
+      flex: 1;
+      min-height: 0;
+      min-width: 0;
+    }
+
+    .stage-main {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      min-width: 0;
+    }
+
+    .vendor-drawer-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text);
+      transition: border-color 0.12s, background 0.12s;
+      flex-shrink: 0;
+    }
+
+    .vendor-drawer-trigger:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .vendor-drawer-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.6875rem;
+      font-weight: 700;
+    }
+
+    .vendor-drawer-count:empty,
+    .vendor-drawer-count[data-count="0"] {
+      display: none;
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (max-width: 1100px) {
+      .posture-summary {
+        width: 100%;
+      }
+    }
+
+    /* ── Typography ─────────────────────────────────────────────────── */
+
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      margin: 6px 0 0;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      max-width: 56ch;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+
+    .card-subtitle {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.5;
+      max-width: 62ch;
+    }
+
+    .taxonomy-pillar {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #cf222e;
+      background: rgba(207, 34, 46, 0.08);
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    /* ── Cards ──────────────────────────────────────────────────────── */
+
+    .card-outlined,
+    .stage-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-5);
+      box-shadow: var(--shadow);
+    }
+
+    .stage-card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: var(--space-4) 0;
+    }
+
+    .category-strip-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .category-strip-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin: 0;
+    }
+
+    .category-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--grey-50);
+      font-size: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .cat-pill.covered { border-color: rgba(46, 125, 50, 0.35); background: #edf7ee; }
+    .cat-pill.partial { border-color: rgba(245, 124, 0, 0.35); background: #fff8ef; }
+    .cat-pill.gap { border-color: rgba(211, 47, 47, 0.35); background: #fdecec; }
+    .cat-pill.na { opacity: 0.72; }
+
+    .cat-pill-label {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .cat-pill-status {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .cat-pill.covered .cat-pill-status { color: var(--success); }
+    .cat-pill.partial .cat-pill-status { color: var(--warning); }
+    .cat-pill.gap .cat-pill-status { color: var(--error); }
+    .cat-pill.na .cat-pill-status { color: var(--text-tertiary); }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-4);
+    }
+
+    .card-head-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    /* ── Matrix card ────────────────────────────────────────────────── */
+
+    .toggle-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    .toggle-label input {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    .heatmap-scroll {
+      overflow-x: auto;
+      margin: 0 -4px;
+      padding: 0 4px;
+    }
+
+    .heatmap {
+      display: grid;
+      grid-template-columns: 210px repeat(4, minmax(150px, 1fr));
+      gap: var(--space-3);
+      min-width: 870px;
+    }
+
+    .heatmap-col-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.3;
+      padding-bottom: 4px;
+    }
+
+    .heatmap-row-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      line-height: 1.3;
+      display: flex;
+      align-items: center;
+      padding-right: 8px;
+    }
+
+    .heatmap-row-label.muted {
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .heatmap-cell {
+      padding: var(--space-3);
+      border-radius: var(--radius-sm);
+      min-height: 84px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .heatmap-cell.na {
+      background: var(--grey-50);
+      border: 1px dashed var(--border);
+      color: var(--text-tertiary);
+    }
+
+    .heatmap-cell.no_catalog {
+      background: #f5f5f5;
+      border: 1px dashed #c7c9cd;
+      color: var(--text-tertiary);
+    }
+
+    .na-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+    }
+
+    .heatmap-cell.rt {
+      background: #e9f6ea;
+      border: 1px solid #a5d6a7;
+    }
+
+    .heatmap-cell.batch {
+      background: #fff7e0;
+      border: 1px solid #ffe082;
+    }
+
+    .heatmap-cell.none {
+      background: #fdecec;
+      border: 1px solid #f3b8b8;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .heatmap-product {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .product-chip {
+      position: relative;
+      width: 84px;
+      height: 42px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid var(--border);
+    }
+
+    .product-chip img {
+      max-width: 62px;
+      max-height: 26px;
+      object-fit: contain;
+    }
+
+    .product-chip .abbr {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .timing-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .timing-badge.rt { background: var(--primary); }
+    .timing-badge.batch { background: #6b7280; }
+
+    .timing-caption {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .muted-dash {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    .timing-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2) var(--space-5);
+      align-items: center;
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--border);
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+
+    .timing-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .matrix-footnote {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      margin: var(--space-3) 0 0;
+      line-height: 1.5;
+    }
+
+    .dimension-binary-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dimension-binary-dot.covered { background: var(--success); }
+    .dimension-binary-dot.partial { background: var(--warning); }
+    .dimension-binary-dot.gap { background: var(--error); }
+
+    .vendor-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(400px, 100vw);
+      height: 100vh;
+      z-index: 210;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.22s ease;
+    }
+
+    .vendor-drawer.open {
+      transform: translateX(0);
+    }
+
+    .vendor-drawer-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .vendor-drawer-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1.125rem;
+      line-height: 1;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    .vendor-drawer-close:hover {
+      border-color: #b8c0cc;
+      color: var(--text);
+    }
+
+    .vendor-drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vendor-panel-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+
+    .vendor-panel-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .vendor-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: var(--space-4);
+    }
+
+    .vendor-section-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin: 0 0 8px;
+    }
+
+    .filter-chip {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--text-secondary);
+      line-height: 1.3;
+      transition: background 0.12s, border-color 0.12s, color 0.12s;
+    }
+
+    .filter-chip:hover {
+      border-color: #b8c0cc;
+      color: var(--text);
+    }
+
+    .filter-chip.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .vendor-empty {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      text-align: center;
+      padding: var(--space-4) 0;
+    }
+
+    .vendor-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .vendor-group-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin: var(--space-2) 0 2px;
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--border);
+    }
+
+    .vendor-group-label:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .vendor-card {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3);
+      background: var(--grey-50);
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    .vendor-card:hover {
+      border-color: #c3c8d1;
+    }
+
+    .vendor-card.selected {
+      border-color: var(--primary);
+      border-width: 2px;
+      padding: 11px;
+      background: var(--primary-soft);
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.12);
+    }
+
+    .vendor-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .vendor-card-logo {
+      width: 68px;
+      height: 38px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px;
+    }
+
+    .vendor-card-logo img {
+      max-width: 100%;
+      max-height: 30px;
+      object-fit: contain;
+    }
+
+    .vendor-card-logo .name-fallback {
+      font-size: 9px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.2;
+      color: var(--text-secondary);
+    }
+
+    .vendor-card-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .vendor-card-name {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin: 2px 0 6px;
+      line-height: 1.25;
+    }
+
+    .vendor-card-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .vendor-desc {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin: 0 0 10px;
+      line-height: 1.5;
+    }
+
+    .vendor-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .marketplace-link {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .marketplace-link:hover {
+      text-decoration: underline;
+    }
+
+    .vendor-toggle {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .vendor-toggle:hover {
+      background: var(--grey-100);
+    }
+
+    .vendor-card.selected .vendor-toggle {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="stage-header full-width">
+      <div class="stage-header-main">
+        <p class="stage-eyebrow">Votiv Protect · Fraud and Risk</p>
+        <h1>Vendor Coverage</h1>
+        <p class="page-subtitle">Simulate marketplace vendor stacks across taxonomy categories and customer journeys.</p>
+      </div>
+      <div class="posture-summary" id="posture-summary" aria-live="polite"></div>
+    </header>
+
+    <section class="bundle-rail full-width" aria-label="Market bundles">
+      <div class="bundle-rail-inner">
+        <div class="bundle-rail-top">
+          <span class="bundle-rail-label">Bundles</span>
+          <button type="button" class="bundle-clear-inline" id="bundle-clear">Clear selection</button>
+        </div>
+        <div class="bundle-cards" id="bundle-presets"></div>
+      </div>
+    </section>
+
+    <div class="stage-workspace">
+      <div class="stage-main">
+        <section class="stage-card stage-heatmap">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Coverage by customer journey</h2>
+              <p class="card-subtitle">Taxonomy categories × journeys — real-time vs batch where applicable.</p>
+            </div>
+            <div class="card-head-actions">
+              <label class="toggle-label">
+                <input type="checkbox" id="hide-empty-categories" checked />
+                Catalog categories only
+              </label>
+              <button type="button" class="vendor-drawer-trigger" id="open-vendor-drawer" aria-expanded="false" aria-controls="vendor-drawer">
+                Vendors
+                <span class="vendor-drawer-count" id="vendor-drawer-count" data-count="0"></span>
+              </button>
+            </div>
+          </div>
+          <div class="heatmap-scroll">
+            <div class="heatmap" id="heatmap"></div>
+          </div>
+          <div class="timing-legend">
+            <div class="timing-legend-item">
+              <span class="timing-badge rt">Real-time</span>
+              <span>In-session interdiction and alerting</span>
+            </div>
+            <div class="timing-legend-item">
+              <span class="timing-badge batch">Batch</span>
+              <span>Post-event alerts only</span>
+            </div>
+            <div class="timing-legend-item">
+              <span class="na-label">N/A</span>
+              <span>Category doesn't apply at this journey</span>
+            </div>
+          </div>
+          <p class="matrix-footnote">The same product can appear in multiple rows when it addresses more than one risk category.</p>
+
+          <div class="stage-card-divider"></div>
+
+          <div class="category-strip-head">
+            <h3 class="category-strip-title">Category rollup</h3>
+          </div>
+          <div class="category-strip" id="dimensions"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer-backdrop" id="vendor-drawer-backdrop" aria-hidden="true"></div>
+  <aside class="vendor-drawer" id="vendor-drawer" aria-label="Vendor catalog" aria-hidden="true">
+    <div class="vendor-drawer-header">
+      <div>
+        <h2 class="vendor-panel-title">Marketplace catalog</h2>
+        <p class="vendor-panel-subtitle">Hand-pick vendors or start from a bundle above. One transactional stack at a time.</p>
+      </div>
+      <button type="button" class="vendor-drawer-close" id="close-vendor-drawer" aria-label="Close vendor catalog">×</button>
+    </div>
+    <div class="vendor-drawer-body">
+      <p class="vendor-section-label">Filter by capability</p>
+      <div class="vendor-filters" id="vendor-filters"></div>
+      <div class="vendor-list" id="products"></div>
+    </div>
+  </aside>
+
+  <script>
+    // ── Votiv Protect taxonomy: Fraud and Risk L3 categories ───────────────
+
+    const JOURNEYS = [
+      { id: 'account_opening', label: 'Account Opening' },
+      { id: 'authentication', label: 'Authentication' },
+      { id: 'money_movement', label: 'Money Movement' },
+      { id: 'profile_changes', label: 'Profile Changes' },
+    ];
+
+    /** Fraud and Risk L3s — order matches taxonomy browser. */
+    const FRAUD_RISK_CATEGORIES = [
+      { id: 'account_takeover', label: 'Account Takeover', hasCatalog: true, weight: 0.25 },
+      { id: 'dark_web', label: 'Dark Web and Exposures', hasCatalog: true, weight: 0.10 },
+      { id: 'deep_fake', label: 'Deep Fake', hasCatalog: true, weight: 0.10 },
+      { id: 'financial_crime_compliance', label: 'Financial Crime Compliance', hasCatalog: true, weight: 0.10 },
+      { id: 'identity_fraud', label: 'Identity Fraud', hasCatalog: true, weight: 0.20 },
+      { id: 'money_laundering', label: 'Money Laundering', hasCatalog: true, weight: 0.15 },
+      { id: 'mule_accounts', label: 'Mule Accounts', hasCatalog: true, weight: 0.10 },
+      { id: 'phishing_scams', label: 'Phishing, Scams, and Coercion', hasCatalog: true, weight: 0.15 },
+      { id: 'threat_detection', label: 'Threat Detection', hasCatalog: true, weight: 0.15 },
+    ];
+
+    const AML_TRANSACTIONAL_ENTRIES = [
+      { productId: 'actimize_rt', level: 'rt' },
+      { productId: 'actimize_batch', level: 'batch', weight: 0.5 },
+      { productId: 'alloy_rt', level: 'rt' },
+      { productId: 'verafin', level: 'batch', weight: 0.5 },
+    ];
+
+    const MULE_DETECTION_ENTRIES = [
+      ...AML_TRANSACTIONAL_ENTRIES,
+      { productId: 'biocatch', level: 'rt' },
+    ];
+
+    const SCAM_COERCION_ENTRIES = [
+      { productId: 'actimize_rt', level: 'rt' },
+      { productId: 'alloy_rt', level: 'rt' },
+      { productId: 'biocatch', level: 'rt' },
+      { productId: 'callsign', level: 'rt' },
+      { productId: 'verafin', level: 'batch', weight: 0.5 },
+    ];
+
+    const ACCOUNT_OPENING_IDV_ENTRIES = [
+      { productId: 'socure', level: 'rt' },
+      { productId: 'alloy_idv', level: 'rt' },
+    ];
+
+    const ACCOUNT_OPENING_BEHAVIORAL_ENTRIES = [
+      { productId: 'biocatch', level: 'rt' },
+    ];
+
+    const ACCOUNT_OPENING_TRANSACTIONAL_ENTRIES = [
+      { productId: 'actimize_rt', level: 'rt' },
+      { productId: 'actimize_batch', level: 'batch', weight: 0.5 },
+    ];
+
+    const ACCOUNT_OPENING_MULE_ENTRIES = [
+      ...ACCOUNT_OPENING_BEHAVIORAL_ENTRIES,
+      ...ACCOUNT_OPENING_TRANSACTIONAL_ENTRIES,
+      { productId: 'verafin', level: 'batch', weight: 0.5 },
+    ];
+
+    const DEEP_FAKE_ENTRIES = [
+      { productId: 'socure', level: 'rt' },
+    ];
+
+    const FCC_ONBOARDING_ENTRIES = [
+      { productId: 'socure', level: 'rt' },
+      { productId: 'alloy_idv', level: 'rt' },
+    ];
+
+    const MEMCYCO_SURFACE_ENTRIES = [
+      { productId: 'memcyco', level: 'rt' },
+    ];
+
+    const FCC_ONGOING_ENTRIES = [...AML_TRANSACTIONAL_ENTRIES];
+
+    const PRODUCT_CATEGORIES_ORDER = ['behavioral', 'transactional', 'takedown', 'id_verification'];
+
+    /** Transactional anomaly vendors — only one family active at a time (Actimize RT+Batch count as one). */
+    const TRANSACTIONAL_FAMILIES = {
+      actimize: ['actimize_rt', 'actimize_batch'],
+      alloy: ['alloy_rt'],
+      verafin: ['verafin'],
+    };
+
+    const TRANSACTIONAL_PRODUCT_IDS = new Set(
+      Object.values(TRANSACTIONAL_FAMILIES).flat(),
+    );
+
+    function transactionalFamilyForProduct(productId) {
+      for (const [family, ids] of Object.entries(TRANSACTIONAL_FAMILIES)) {
+        if (ids.includes(productId)) return family;
+      }
+      return null;
+    }
+
+    function enforceTransactionalExclusivity(targetSet, productId) {
+      const family = transactionalFamilyForProduct(productId);
+      if (!family) return;
+      for (const [otherFamily, ids] of Object.entries(TRANSACTIONAL_FAMILIES)) {
+        if (otherFamily === family) continue;
+        for (const id of ids) targetSet.delete(id);
+      }
+    }
+
+    function addProductToSelection(productId) {
+      enforceTransactionalExclusivity(selected, productId);
+      selected.add(productId);
+    }
+
+    function toggleProductSelection(productId) {
+      if (selected.has(productId)) {
+        selected.delete(productId);
+      } else {
+        addProductToSelection(productId);
+      }
+      invalidateActiveBundle();
+      render();
+    }
+
+    /** Curated stacks — Callsign = managed/mid-market; BioCatch = enterprise/custom. */
+    const BUNDLES = [
+      {
+        id: 'full-managed',
+        label: 'Full Stack',
+        tag: 'Managed',
+        market: 'Mid-market · Callsign',
+        blurb: 'Memcyco, Socure IDV, and Actimize on payment rails.',
+        productIds: ['callsign', 'memcyco', 'socure', 'actimize_rt', 'actimize_batch'],
+      },
+      {
+        id: 'full-enterprise',
+        label: 'Full Stack',
+        tag: 'Enterprise',
+        market: 'Digital bank · BioCatch',
+        blurb: 'Same stack with deeper behavioral tuning at opening and login.',
+        productIds: ['biocatch', 'memcyco', 'socure', 'actimize_rt', 'actimize_batch'],
+      },
+      {
+        id: 'login-managed',
+        label: 'Login First',
+        tag: 'Managed',
+        market: 'Phase 1 · Callsign',
+        blurb: 'Login, Socure IDV, and impersonation — add Actimize when payment rails are ready.',
+        productIds: ['callsign', 'memcyco', 'socure'],
+      },
+      {
+        id: 'login-enterprise',
+        label: 'Login First',
+        tag: 'Enterprise',
+        market: 'Phase 1 · BioCatch',
+        blurb: 'Origination and session fraud before transactional rollout.',
+        productIds: ['biocatch', 'memcyco', 'socure'],
+      },
+    ];
+
+    const PRODUCTS = [
+      {
+        id: 'callsign',
+        name: 'Callsign',
+        category: 'behavioral',
+        type: 'realtime',
+        description: 'Behavioral biometrics — session and channel risk scoring across digital banking journeys.',
+        marketplaceUrl: 'https://marketplace.example.com/vendors/callsign',
+      },
+      {
+        id: 'biocatch',
+        name: 'BioCatch',
+        category: 'behavioral',
+        type: 'realtime',
+        description: 'Behavioral biometrics — ATO, scam coercion, and account-opening fraud via direct vendor relationship.',
+        marketplaceUrl: 'https://marketplace.example.com/vendors/biocatch',
+      },
+      {
+        id: 'alloy_rt',
+        name: 'Alloy Fraud',
+        category: 'transactional',
+        type: 'realtime',
+        description: 'Real-time transactional fraud monitoring — alternative to NICE Actimize on payment rails.',
+        marketplaceUrl: 'https://marketplace.example.com/vendors/alloy-realtime',
+      },
+      {
+        id: 'actimize_rt',
+        name: 'NICE Actimize (Real-time)',
+        category: 'transactional',
+        type: 'realtime',
+        description: 'Real-time fraud monitoring and interdiction for high-value money movement.',
+        marketplaceUrl: 'https://marketplace.example.com/vendors/actimize-realtime',
+      },
+      {
+        id: 'actimize_batch',
+        name: 'NICE Actimize (Batch)',
+        category: 'transactional',
+        type: 'batch',
+        description: 'Batch transactional monitoring — post-event alerts without in-session interdiction.',
+        marketplaceUrl: 'https://marketplace.example.com/vendors/actimize-batch',
+      },
+      {
+        id: 'verafin',
+        name: 'Verafin',
+        category: 'transactional',
+        type: 'batch',
+        description: 'AML, fraud analytics, and scam/wire interdiction — batch alerts plus consortium payee risk.',
+        marketplaceUrl: 'https://marketplace.example.com/vendors/verafin',
+      },
+      {
+        id: 'memcyco',
+        name: 'Memcyco',
+        category: 'takedown',
+        type: 'realtime',
+        description: 'Real-time impersonation defense, dark web exposure monitoring, and upstream ATO prevention.',
+        marketplaceUrl: 'https://marketplace.example.com/vendors/memcyco',
+      },
+      {
+        id: 'socure',
+        name: 'Socure',
+        category: 'id_verification',
+        type: 'realtime',
+        description: 'Primary IDV — document verification, synthetic identity scoring, liveness, and deepfake detection.',
+        marketplaceUrl: 'https://marketplace.example.com/vendors/socure',
+      },
+      {
+        id: 'alloy_idv',
+        name: 'Alloy (IDV)',
+        category: 'id_verification',
+        type: 'realtime',
+        description: 'IDV orchestration and policy routing — integrates Socure and other verification providers.',
+        marketplaceUrl: 'https://marketplace.example.com/vendors/alloy-idv',
+      },
+    ];
+
+    const productById = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
+
+    /** Category × journey: which vendor products may apply. */
+    const CELL_OPTIONS = {
+      dark_web: {
+        account_opening: { na: false, entries: MEMCYCO_SURFACE_ENTRIES },
+        authentication: { na: false, entries: MEMCYCO_SURFACE_ENTRIES },
+        money_movement: { na: true },
+        profile_changes: { na: false, entries: MEMCYCO_SURFACE_ENTRIES },
+      },
+      account_takeover: {
+        account_opening: { na: false, entries: [{ productId: 'memcyco', level: 'rt' }] },
+        authentication: { na: false, entries: [
+          { productId: 'callsign', level: 'rt' },
+          { productId: 'biocatch', level: 'rt' },
+          { productId: 'memcyco', level: 'rt' },
+        ]},
+        money_movement: { na: false, entries: [{ productId: 'callsign', level: 'rt' }, { productId: 'biocatch', level: 'rt' }] },
+        profile_changes: { na: false, entries: [
+          { productId: 'callsign', level: 'rt' },
+          { productId: 'biocatch', level: 'rt' },
+          { productId: 'memcyco', level: 'rt' },
+        ]},
+      },
+      phishing_scams: {
+        account_opening: { na: false, entries: [{ productId: 'memcyco', level: 'rt' }] },
+        authentication: { na: false, entries: [{ productId: 'memcyco', level: 'rt' }] },
+        money_movement: { na: false, entries: SCAM_COERCION_ENTRIES },
+        profile_changes: { na: false, entries: [{ productId: 'memcyco', level: 'rt' }] },
+      },
+      threat_detection: {
+        account_opening: { na: true },
+        authentication: { na: true },
+        money_movement: { na: false, entries: AML_TRANSACTIONAL_ENTRIES },
+        profile_changes: { na: true },
+      },
+      identity_fraud: {
+        account_opening: { na: false, entries: [
+          ...ACCOUNT_OPENING_IDV_ENTRIES,
+          ...ACCOUNT_OPENING_BEHAVIORAL_ENTRIES,
+          ...ACCOUNT_OPENING_TRANSACTIONAL_ENTRIES,
+        ]},
+        authentication: { na: true },
+        money_movement: { na: true },
+        profile_changes: { na: false, entries: [{ productId: 'socure', level: 'rt' }, { productId: 'alloy_idv', level: 'rt' }] },
+      },
+      money_laundering: {
+        account_opening: { na: true },
+        authentication: { na: true },
+        money_movement: { na: false, entries: AML_TRANSACTIONAL_ENTRIES },
+        profile_changes: { na: true },
+      },
+      mule_accounts: {
+        account_opening: { na: false, entries: ACCOUNT_OPENING_MULE_ENTRIES },
+        authentication: { na: true },
+        money_movement: { na: false, entries: MULE_DETECTION_ENTRIES },
+        profile_changes: { na: true },
+      },
+      deep_fake: {
+        account_opening: { na: false, entries: DEEP_FAKE_ENTRIES },
+        authentication: { na: true },
+        money_movement: { na: true },
+        profile_changes: { na: false, entries: DEEP_FAKE_ENTRIES },
+      },
+      financial_crime_compliance: {
+        account_opening: { na: false, entries: FCC_ONBOARDING_ENTRIES },
+        authentication: { na: true },
+        money_movement: { na: false, entries: FCC_ONGOING_ENTRIES },
+        profile_changes: { na: false, entries: FCC_ONBOARDING_ENTRIES },
+      },
+    };
+
+    /** Which taxonomy categories each product can address (derived from CELL_OPTIONS). */
+    function buildProductTaxonomyMap() {
+      const map = {};
+      for (const [catId, journeys] of Object.entries(CELL_OPTIONS)) {
+        for (const cell of Object.values(journeys)) {
+          if (cell.na || !cell.entries) continue;
+          for (const e of cell.entries) {
+            if (!map[e.productId]) map[e.productId] = new Set();
+            map[e.productId].add(catId);
+          }
+        }
+      }
+      return map;
+    }
+
+    const PRODUCT_TAXONOMY = buildProductTaxonomyMap();
+    const CATALOG_TAXONOMY_FILTERS = FRAUD_RISK_CATEGORIES.filter((c) => c.hasCatalog);
+
+    const WEIGHT = { rt: 1, batch: 0 };
+
+    const LOGO_FILES = {
+      actimize_batch: 'actimize_batch.png',
+      actimize_rt: 'actimize_rt.png',
+      alloy_rt: 'alloy_rt.svg',
+      alloy_idv: 'alloy_idv.svg',
+      biocatch: 'biocatch.png',
+      callsign: 'callsign.png',
+      memcyco: 'memcyco.png',
+      socure: 'socure.png',
+      verafin: 'verafin.webp',
+    };
+
+    const LOGO_BASE = '/logos/';
+
+    const TIMING_CATEGORIES = new Set([
+      'threat_detection',
+      'money_laundering',
+      'mule_accounts',
+      'financial_crime_compliance',
+    ]);
+
+    // ── Scoring ──────────────────────────────────────────────────────────
+
+    function scoreCell(categoryId, journeyId, enabled, categoryMeta) {
+      if (!categoryMeta.hasCatalog) {
+        return { outcome: 'no_catalog', score: 0, catalog: [] };
+      }
+
+      const cell = CELL_OPTIONS[categoryId][journeyId];
+      if (cell.na) return { outcome: 'na', score: 0, catalog: [] };
+
+      const entryWeight = (e) => (e.weight !== undefined ? e.weight : WEIGHT[e.level]);
+
+      const catalog = cell.entries.map((e) => ({
+        ...e,
+        weight: entryWeight(e),
+        enabled: enabled.has(e.productId) && !productById[e.productId]?.configMismatch,
+      }));
+
+      let best = 0;
+      for (const e of cell.entries) {
+        if (!enabled.has(e.productId) || productById[e.productId]?.configMismatch) continue;
+        const w = entryWeight(e);
+        if (w > best) best = w;
+      }
+
+      let outcome;
+      if (best >= 1) outcome = 'rt';
+      else if (best >= 0.25) outcome = 'batch';
+      else outcome = 'none';
+
+      return { outcome, score: best, catalog };
+    }
+
+    function computePosture(enabled) {
+      const cells = {};
+      for (const cat of FRAUD_RISK_CATEGORIES) {
+        cells[cat.id] = {};
+        for (const j of JOURNEYS) {
+          cells[cat.id][j.id] = scoreCell(cat.id, j.id, enabled, cat);
+        }
+      }
+
+      const categoryPct = {};
+      for (const cat of FRAUD_RISK_CATEGORIES) {
+        if (!cat.hasCatalog) {
+          categoryPct[cat.id] = null;
+          continue;
+        }
+        let sum = 0;
+        let n = 0;
+        for (const j of JOURNEYS) {
+          const c = cells[cat.id][j.id];
+          if (c.outcome === 'na' || c.outcome === 'no_catalog') continue;
+          sum += c.score;
+          n += 1;
+        }
+        categoryPct[cat.id] = n ? Math.round((sum / n) * 100) : 0;
+      }
+
+      return { cells, categoryPct };
+    }
+
+    function productCategoryLabel(c) {
+      const labels = {
+        behavioral: 'Account Takeover / Behavioral Biometrics',
+        transactional: 'Transactional Anomaly Detection',
+        takedown: 'Phishing / Impersonation',
+        id_verification: 'Identity Verification',
+      };
+      return labels[c] || c;
+    }
+
+    function timingLabel(levelOrType) {
+      if (levelOrType === 'rt' || levelOrType === 'realtime') return 'Real-time';
+      if (levelOrType === 'batch') return 'Batch';
+      return null;
+    }
+
+    function timingBadge(levelOrType) {
+      const label = timingLabel(levelOrType);
+      if (!label) return '';
+      const cls = levelOrType === 'batch' ? 'batch' : 'rt';
+      return `<span class="timing-badge ${cls}">${label}</span>`;
+    }
+
+    function productLogoUrl(id) {
+      const file = LOGO_FILES[id];
+      return file ? LOGO_BASE + file : null;
+    }
+
+    function showTypeBadge(id) {
+      return ['verafin', 'actimize_rt', 'actimize_batch', 'alloy_rt'].includes(id);
+    }
+
+    // ── State ────────────────────────────────────────────────────────────
+
+    let selected = new Set();
+    let hideEmptyCategories = true;
+    let vendorFilter = 'all';
+    let activeBundleId = null;
+    let vendorDrawerOpen = false;
+
+    function openVendorDrawer() {
+      vendorDrawerOpen = true;
+      document.getElementById('vendor-drawer').classList.add('open');
+      document.getElementById('vendor-drawer-backdrop').classList.add('open');
+      document.getElementById('vendor-drawer').setAttribute('aria-hidden', 'false');
+      document.getElementById('vendor-drawer-backdrop').setAttribute('aria-hidden', 'false');
+      document.getElementById('open-vendor-drawer').setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeVendorDrawer() {
+      vendorDrawerOpen = false;
+      document.getElementById('vendor-drawer').classList.remove('open');
+      document.getElementById('vendor-drawer-backdrop').classList.remove('open');
+      document.getElementById('vendor-drawer').setAttribute('aria-hidden', 'true');
+      document.getElementById('vendor-drawer-backdrop').setAttribute('aria-hidden', 'true');
+      document.getElementById('open-vendor-drawer').setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    function bundleSelectionMatches(bundle) {
+      if (selected.size !== bundle.productIds.length) return false;
+      return bundle.productIds.every((id) => selected.has(id));
+    }
+
+    function applyBundle(bundleId) {
+      const bundle = BUNDLES.find((b) => b.id === bundleId);
+      if (!bundle) return;
+      selected = new Set();
+      for (const id of bundle.productIds) {
+        addProductToSelection(id);
+      }
+      activeBundleId = bundleId;
+      render();
+    }
+
+    function clearSelection() {
+      selected = new Set();
+      activeBundleId = null;
+      render();
+    }
+
+    function invalidateActiveBundle() {
+      if (!activeBundleId) return;
+      const bundle = BUNDLES.find((b) => b.id === activeBundleId);
+      if (!bundle || !bundleSelectionMatches(bundle)) activeBundleId = null;
+    }
+
+    function visibleCategories() {
+      return hideEmptyCategories
+        ? FRAUD_RISK_CATEGORIES.filter((c) => c.hasCatalog)
+        : FRAUD_RISK_CATEGORIES;
+    }
+
+    function categoryBinaryStatus(pct) {
+      if (pct === null) return 'na';
+      if (pct === 0) return 'gap';
+      if (pct === 100) return 'covered';
+      return 'partial';
+    }
+
+    function binaryStatusLabel(status) {
+      const labels = { covered: 'Covered', partial: 'Partial', gap: 'Gap', na: 'N/A' };
+      return labels[status] || status;
+    }
+
+    function filteredProducts() {
+      if (vendorFilter === 'all') return PRODUCTS;
+      return PRODUCTS.filter((p) => PRODUCT_TAXONOMY[p.id]?.has(vendorFilter));
+    }
+
+    function computeCategoryStats(scores) {
+      let covered = 0;
+      let partial = 0;
+      let gap = 0;
+      for (const cat of FRAUD_RISK_CATEGORIES) {
+        const pct = scores.categoryPct[cat.id];
+        if (pct === null) continue;
+        const status = categoryBinaryStatus(pct);
+        if (status === 'covered') covered += 1;
+        else if (status === 'partial') partial += 1;
+        else if (status === 'gap') gap += 1;
+      }
+      return { covered, partial, gap };
+    }
+
+    function renderPostureSummary(scores) {
+      const stats = computeCategoryStats(scores);
+      const bundle = activeBundleId ? BUNDLES.find((b) => b.id === activeBundleId) : null;
+      const bundleLabel = bundle ? `${bundle.label} · ${bundle.tag}` : (selected.size ? 'Custom stack' : 'No vendors selected');
+
+      document.getElementById('posture-summary').innerHTML = `
+        <div class="summary-stat summary-stat-wide">
+          <span class="summary-stat-label">Active stack</span>
+          <span class="summary-stat-value neutral" style="font-size:0.9375rem;font-weight:600;">${bundleLabel}</span>
+        </div>
+        <div class="summary-stat">
+          <span class="summary-stat-label">Vendors</span>
+          <span class="summary-stat-value neutral">${selected.size}</span>
+        </div>
+        <div class="summary-stat">
+          <span class="summary-stat-label">Covered</span>
+          <span class="summary-stat-value covered">${stats.covered}</span>
+        </div>
+        <div class="summary-stat">
+          <span class="summary-stat-label">Partial</span>
+          <span class="summary-stat-value partial">${stats.partial}</span>
+        </div>
+        <div class="summary-stat">
+          <span class="summary-stat-label">Gaps</span>
+          <span class="summary-stat-value gap">${stats.gap}</span>
+        </div>
+      `;
+    }
+
+    function renderBundlePresets() {
+      document.getElementById('bundle-presets').innerHTML = BUNDLES.map((b) => `
+        <button type="button" class="bundle-card${activeBundleId === b.id ? ' active' : ''}" data-bundle="${b.id}">
+          <div class="bundle-card-head">
+            <span class="bundle-card-label">${b.label}</span>
+            <span class="bundle-card-tag">${b.tag}</span>
+          </div>
+          <span class="bundle-card-market">${b.market}</span>
+          <p class="bundle-card-blurb">${b.blurb}</p>
+        </button>
+      `).join('');
+
+      document.querySelectorAll('.bundle-card').forEach((btn) => {
+        btn.addEventListener('click', () => applyBundle(btn.dataset.bundle));
+      });
+    }
+
+    function renderVendorFilters() {
+      const chips = [
+        `<button type="button" class="filter-chip${vendorFilter === 'all' ? ' active' : ''}" data-filter="all">All</button>`,
+        ...CATALOG_TAXONOMY_FILTERS.map((c) =>
+          `<button type="button" class="filter-chip${vendorFilter === c.id ? ' active' : ''}" data-filter="${c.id}">${c.label}</button>`,
+        ),
+      ].join('');
+      document.getElementById('vendor-filters').innerHTML = chips;
+
+      document.querySelectorAll('.filter-chip').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          vendorFilter = btn.dataset.filter;
+          render();
+        });
+      });
+    }
+
+    document.getElementById('hide-empty-categories').addEventListener('change', (e) => {
+      hideEmptyCategories = e.target.checked;
+      render();
+    });
+
+    document.getElementById('bundle-clear').addEventListener('click', clearSelection);
+    document.getElementById('open-vendor-drawer').addEventListener('click', openVendorDrawer);
+    document.getElementById('close-vendor-drawer').addEventListener('click', closeVendorDrawer);
+    document.getElementById('vendor-drawer-backdrop').addEventListener('click', closeVendorDrawer);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && vendorDrawerOpen) closeVendorDrawer();
+    });
+
+    // ── Render helpers ─────────────────────────────────────────────────
+
+    function renderProductChip(c, showLevel, productName) {
+      const src = productLogoUrl(c.productId);
+      const abbr = (productName || c.productId).slice(0, 3);
+      const timing = showLevel
+        ? `<span class="timing-caption">${timingLabel(c.level)}</span>`
+        : '';
+      return `<div class="heatmap-product">
+        <div class="product-chip">
+          ${src ? `<img src="${src}" alt="" />` : `<span class="abbr">${abbr}</span>`}
+        </div>
+        ${timing}
+      </div>`;
+    }
+
+    function renderCellContent(cell, categoryId) {
+      if (cell.outcome === 'no_catalog') {
+        return '<span class="na-label">N/A</span>';
+      }
+      if (cell.outcome === 'na') {
+        return '<span class="na-label">N/A</span>';
+      }
+      const enabled = cell.catalog.filter((c) => c.enabled);
+      if (enabled.length === 0) {
+        return '<span class="muted-dash">No coverage</span>';
+      }
+      const showLevel = TIMING_CATEGORIES.has(categoryId);
+      return enabled.map((c) => {
+        const name = productById[c.productId]?.name;
+        return renderProductChip(c, showLevel, name);
+      }).join('');
+    }
+
+    function renderCategoryPill(cat, scores) {
+      const pct = scores.categoryPct[cat.id];
+      if (pct === null) {
+        return `<div class="cat-pill na">
+          <span class="cat-pill-label">${cat.label}</span>
+          <span class="cat-pill-status">${binaryStatusLabel('na')}</span>
+        </div>`;
+      }
+      const status = categoryBinaryStatus(pct);
+      return `<div class="cat-pill ${status}">
+        <span class="dimension-binary-dot ${status}"></span>
+        <span class="cat-pill-label">${cat.label}</span>
+        <span class="cat-pill-status">${binaryStatusLabel(status)}</span>
+      </div>`;
+    }
+
+    function render() {
+      const scores = computePosture(selected);
+
+      renderPostureSummary(scores);
+
+      const countEl = document.getElementById('vendor-drawer-count');
+      countEl.textContent = selected.size ? String(selected.size) : '';
+      countEl.dataset.count = String(selected.size);
+
+      const heatmap = document.getElementById('heatmap');
+      let heatmapHtml = '<div></div>';
+      heatmapHtml += JOURNEYS.map((j) => `<div class="heatmap-col-label">${j.label}</div>`).join('');
+
+      for (const cat of visibleCategories()) {
+        const rowClass = cat.hasCatalog ? '' : ' muted';
+        heatmapHtml += `<div class="heatmap-row-label${rowClass}">${cat.label}</div>`;
+        for (const journey of JOURNEYS) {
+          const cell = scores.cells[cat.id][journey.id];
+          const content = renderCellContent(cell, cat.id);
+          heatmapHtml += `<div class="heatmap-cell ${cell.outcome}"><div class="chip-row">${content}</div></div>`;
+        }
+      }
+      heatmap.innerHTML = heatmapHtml;
+
+      document.getElementById('dimensions').innerHTML = FRAUD_RISK_CATEGORIES.map((cat) =>
+        renderCategoryPill(cat, scores),
+      ).join('');
+
+      renderBundlePresets();
+      renderVendorFilters();
+
+      const products = filteredProducts();
+      let vendorHtml = '';
+      if (!products.length) {
+        vendorHtml = '<p class="vendor-empty">No vendors match this capability filter.</p>';
+      } else {
+        const shownCategories = [...new Set(products.map((p) => p.category))];
+        for (const cat of PRODUCT_CATEGORIES_ORDER) {
+          if (!shownCategories.includes(cat)) continue;
+          const list = products.filter((p) => p.category === cat);
+          vendorHtml += `<div class="vendor-group-label">${productCategoryLabel(cat)}${cat === 'transactional' ? ' · one stack' : ''}</div>`;
+          for (const p of list) {
+            const isSelected = selected.has(p.id);
+            const logo = productLogoUrl(p.id);
+            const timing = showTypeBadge(p.id) ? timingBadge(p.type === 'realtime' ? 'rt' : 'batch') : '';
+            const caps = [...(PRODUCT_TAXONOMY[p.id] || [])]
+              .map((id) => FRAUD_RISK_CATEGORIES.find((c) => c.id === id)?.label)
+              .filter(Boolean)
+              .slice(0, 3)
+              .join(' · ');
+            vendorHtml += `<article class="vendor-card${isSelected ? ' selected' : ''}" data-product="${p.id}">
+              <div class="vendor-card-header">
+                <div class="vendor-card-logo">
+                  ${logo ? `<img src="${logo}" alt="${p.name}" />` : `<span class="name-fallback">${p.name}</span>`}
+                </div>
+                <div class="vendor-card-meta">
+                  <h3 class="vendor-card-name">${p.name}</h3>
+                  <div class="vendor-card-badges">${timing}</div>
+                </div>
+              </div>
+              <p class="vendor-desc">${p.description}</p>
+              ${caps ? `<p class="vendor-desc" style="margin-top:-6px;font-size:0.7rem;color:var(--text-tertiary);">${caps}</p>` : ''}
+              <div class="vendor-card-footer">
+                <a class="marketplace-link" href="${p.marketplaceUrl}" target="_blank" rel="noopener noreferrer">View in marketplace →</a>
+                <button type="button" class="vendor-toggle" data-product="${p.id}" aria-pressed="${isSelected}">
+                  ${isSelected ? 'Selected' : 'Add'}
+                </button>
+              </div>
+            </article>`;
+          }
+        }
+      }
+      document.getElementById('products').innerHTML = vendorHtml;
+
+      document.querySelectorAll('.vendor-toggle').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleProductSelection(btn.dataset.product);
+        });
+      });
+
+      document.querySelectorAll('.vendor-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('a, button')) return;
+          toggleProductSelection(card.dataset.product);
+        });
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
