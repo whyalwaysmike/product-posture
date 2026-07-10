@@ -75,6 +75,11 @@
       box-shadow: var(--shadow);
     }
 
+    .stage-header-main {
+      flex: 1;
+      min-width: 0;
+    }
+
     .stage-eyebrow {
       margin: 0 0 6px;
       font-size: 0.6875rem;
@@ -599,6 +604,85 @@
       color: var(--text-secondary);
     }
 
+    .heatmap-product.is-selected-vendor {
+      cursor: help;
+    }
+
+    .heatmap-product.is-selected-vendor .product-chip {
+      transition: border-color 0.12s, box-shadow 0.12s;
+    }
+
+    .heatmap-product.is-selected-vendor:hover .product-chip {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .vendor-hover-tooltip {
+      position: fixed;
+      z-index: 300;
+      width: min(300px, calc(100vw - 24px));
+      padding: 12px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-lg);
+      pointer-events: none;
+    }
+
+    .vendor-hover-tooltip[hidden] {
+      display: none;
+    }
+
+    .vendor-tooltip-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .vendor-tooltip-logo {
+      width: 44px;
+      height: 32px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      background: var(--grey-50);
+      border: 1px solid var(--border);
+    }
+
+    .vendor-tooltip-logo img {
+      max-width: 36px;
+      max-height: 22px;
+      object-fit: contain;
+    }
+
+    .vendor-tooltip-name {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .vendor-tooltip-badges {
+      margin-top: 4px;
+    }
+
+    .vendor-tooltip-desc {
+      margin: 0 0 6px;
+      font-size: 0.75rem;
+      line-height: 1.45;
+      color: var(--text-secondary);
+    }
+
+    .vendor-tooltip-caps {
+      margin: 0;
+      font-size: 0.6875rem;
+      line-height: 1.4;
+      color: var(--text-tertiary);
+    }
+
     .timing-badge {
       display: inline-flex;
       align-items: center;
@@ -651,6 +735,11 @@
       color: var(--text-tertiary);
       margin: var(--space-3) 0 0;
       line-height: 1.5;
+    }
+
+    .matrix-footnote-emphasis {
+      color: var(--text-secondary);
+      max-width: 72ch;
     }
 
     .dimension-binary-dot {
@@ -958,7 +1047,7 @@
           <div class="card-head">
             <div>
               <h2 class="card-title">Coverage by customer journey</h2>
-              <p class="card-subtitle">Taxonomy categories × journeys — real-time vs batch where applicable.</p>
+              <p class="card-subtitle">Taxonomy categories × customer journeys — batch labels only where the vendor is post-event.</p>
             </div>
             <div class="card-head-actions">
               <label class="toggle-label">
@@ -976,18 +1065,17 @@
           </div>
           <div class="timing-legend">
             <div class="timing-legend-item">
-              <span class="timing-badge rt">Real-time</span>
-              <span>In-session interdiction and alerting</span>
-            </div>
-            <div class="timing-legend-item">
               <span class="timing-badge batch">Batch</span>
-              <span>Post-event alerts only</span>
+              <span>NICE Actimize (Batch) and Verafin — vendor-native post-event monitoring</span>
             </div>
             <div class="timing-legend-item">
               <span class="na-label">N/A</span>
               <span>Category doesn't apply at this journey</span>
             </div>
           </div>
+          <p class="matrix-footnote matrix-footnote-emphasis">
+            All other vendors interdict in real-time during the session. NICE Actimize (Batch) and Verafin provide post-event alerts only.
+          </p>
           <p class="matrix-footnote">The same product can appear in multiple rows when it addresses more than one risk category.</p>
 
           <div class="stage-card-divider"></div>
@@ -1016,6 +1104,8 @@
       <div class="vendor-list" id="products"></div>
     </div>
   </aside>
+
+  <div id="vendor-tooltip" class="vendor-hover-tooltip" role="tooltip" hidden></div>
 
   <script>
     // ── Votiv Protect taxonomy: Fraud and Risk L3 categories ───────────────
@@ -1146,23 +1236,23 @@
         label: 'Full Stack',
         tag: 'Managed',
         market: 'Mid-market · Callsign',
-        blurb: 'Memcyco, Socure IDV, and Actimize on payment rails.',
-        productIds: ['callsign', 'memcyco', 'socure', 'actimize_rt', 'actimize_batch'],
+        blurb: 'Protect customers from account opening through every payment. NICE Actimize real-time recommended for transaction monitoring — operated and supported for you.',
+        productIds: ['callsign', 'memcyco', 'socure', 'actimize_rt'],
       },
       {
         id: 'full-enterprise',
         label: 'Full Stack',
         tag: 'Enterprise',
         market: 'Digital bank · BioCatch',
-        blurb: 'Same stack with deeper behavioral tuning at opening and login.',
-        productIds: ['biocatch', 'memcyco', 'socure', 'actimize_rt', 'actimize_batch'],
+        blurb: 'Full journey coverage with behavioral intelligence tuned to your channels and risk appetite. NICE Actimize real-time recommended for payment monitoring.',
+        productIds: ['biocatch', 'memcyco', 'socure', 'actimize_rt'],
       },
       {
         id: 'login-managed',
         label: 'Login First',
         tag: 'Managed',
         market: 'Phase 1 · Callsign',
-        blurb: 'Login, Socure IDV, and impersonation — add Actimize when payment rails are ready.',
+        blurb: 'Secure sign-in, verify new customers, and stop impersonation scams. When you\'re ready for payments, we recommend NICE Actimize real-time.',
         productIds: ['callsign', 'memcyco', 'socure'],
       },
       {
@@ -1170,7 +1260,7 @@
         label: 'Login First',
         tag: 'Enterprise',
         market: 'Phase 1 · BioCatch',
-        blurb: 'Origination and session fraud before transactional rollout.',
+        blurb: 'Build trust at onboarding and every session first. NICE Actimize real-time recommended when you expand to wires and ACH.',
         productIds: ['biocatch', 'memcyco', 'socure'],
       },
     ];
@@ -1342,19 +1432,18 @@
 
     const WEIGHT = { rt: 1, batch: 0 };
 
-    const LOGO_FILES = {
-      actimize_batch: 'actimize_batch.png',
-      actimize_rt: 'actimize_rt.png',
-      alloy_rt: 'alloy_rt.svg',
-      alloy_idv: 'alloy_idv.svg',
-      biocatch: 'biocatch.png',
-      callsign: 'callsign.png',
-      memcyco: 'memcyco.png',
-      socure: 'socure.png',
-      verafin: 'verafin.webp',
+    /** Public logo URLs — vendor sites and PR Newswire media kits. */
+    const PRODUCT_LOGOS = {
+      actimize_batch: 'https://resources.nice.com/wp-content/uploads/2025/05/nice-new-logo.svg',
+      actimize_rt: 'https://resources.nice.com/wp-content/uploads/2025/05/nice-new-logo.svg',
+      alloy_idv: 'https://www.alloy.com/static/img/logo.svg',
+      alloy_rt: 'https://www.alloy.com/static/img/logo.svg',
+      biocatch: 'https://mma.prnewswire.com/media/1843699/biocatch_logo_rgb_2x_Logo.png',
+      callsign: 'https://mma.prnewswire.com/media/1833444/Callsign_Logo.jpg',
+      memcyco: 'https://www.memcyco.com/wp-content/uploads/2022/09/Memcyco-main-logo-3.svg',
+      socure: 'https://www.socure.com/images/PR-News-Page-Socure-Logo-2.png',
+      verafin: 'https://www.verafin.com/wp-content/uploads/2023/08/logo.webp',
     };
-
-    const LOGO_BASE = '/logos/';
 
     const TIMING_CATEGORIES = new Set([
       'threat_detection',
@@ -1435,26 +1524,95 @@
       return labels[c] || c;
     }
 
-    function timingLabel(levelOrType) {
-      if (levelOrType === 'rt' || levelOrType === 'realtime') return 'Real-time';
-      if (levelOrType === 'batch') return 'Batch';
-      return null;
+    const BATCH_VENDOR_IDS = new Set(['actimize_batch', 'verafin']);
+
+    function isBatchVendor(productId) {
+      return BATCH_VENDOR_IDS.has(productId);
     }
 
-    function timingBadge(levelOrType) {
-      const label = timingLabel(levelOrType);
-      if (!label) return '';
-      const cls = levelOrType === 'batch' ? 'batch' : 'rt';
-      return `<span class="timing-badge ${cls}">${label}</span>`;
+    function timingBadge(productId) {
+      if (!isBatchVendor(productId)) return '';
+      return '<span class="timing-badge batch">Batch</span>';
     }
 
     function productLogoUrl(id) {
-      const file = LOGO_FILES[id];
-      return file ? LOGO_BASE + file : null;
+      return PRODUCT_LOGOS[id] || null;
     }
 
-    function showTypeBadge(id) {
-      return ['verafin', 'actimize_rt', 'actimize_batch', 'alloy_rt'].includes(id);
+    function vendorCapabilityLine(productId) {
+      return [...(PRODUCT_TAXONOMY[productId] || [])]
+        .map((id) => FRAUD_RISK_CATEGORIES.find((c) => c.id === id)?.label)
+        .filter(Boolean)
+        .slice(0, 3)
+        .join(' · ');
+    }
+
+    function vendorDetailHtml(productId) {
+      const p = productById[productId];
+      if (!p) return '';
+      const logo = productLogoUrl(productId);
+      const timing = timingBadge(productId);
+      const caps = vendorCapabilityLine(productId);
+      return `
+        <div class="vendor-tooltip-header">
+          <div class="vendor-tooltip-logo">
+            ${logo ? `<img src="${logo}" alt="" referrerpolicy="no-referrer" />` : ''}
+          </div>
+          <div>
+            <div class="vendor-tooltip-name">${p.name}</div>
+            <div class="vendor-tooltip-badges">${timing}</div>
+          </div>
+        </div>
+        <p class="vendor-tooltip-desc">${p.description}</p>
+        ${caps ? `<p class="vendor-tooltip-caps">${caps}</p>` : ''}
+      `;
+    }
+
+    function positionVendorTooltip(event, tip) {
+      const margin = 12;
+      tip.style.left = `${event.clientX + margin}px`;
+      tip.style.top = `${event.clientY + margin}px`;
+      const rect = tip.getBoundingClientRect();
+      let left = event.clientX + margin;
+      let top = event.clientY + margin;
+      if (left + rect.width > window.innerWidth - margin) {
+        left = event.clientX - rect.width - margin;
+      }
+      if (top + rect.height > window.innerHeight - margin) {
+        top = event.clientY - rect.height - margin;
+      }
+      tip.style.left = `${Math.max(margin, left)}px`;
+      tip.style.top = `${Math.max(margin, top)}px`;
+    }
+
+    function bindVendorHeatmapTooltips() {
+      const tip = document.getElementById('vendor-tooltip');
+      const heatmap = document.getElementById('heatmap');
+      let activeProductId = null;
+
+      heatmap.addEventListener('mouseover', (e) => {
+        const chip = e.target.closest('[data-vendor-tooltip]');
+        if (!chip) return;
+        const productId = chip.dataset.vendorTooltip;
+        if (!selected.has(productId)) return;
+        activeProductId = productId;
+        tip.innerHTML = vendorDetailHtml(productId);
+        tip.hidden = false;
+        positionVendorTooltip(e, tip);
+      });
+
+      heatmap.addEventListener('mousemove', (e) => {
+        if (tip.hidden || !activeProductId) return;
+        positionVendorTooltip(e, tip);
+      });
+
+      heatmap.addEventListener('mouseout', (e) => {
+        const fromChip = e.target.closest('[data-vendor-tooltip]');
+        const toChip = e.relatedTarget?.closest?.('[data-vendor-tooltip]');
+        if (fromChip && toChip) return;
+        tip.hidden = true;
+        activeProductId = null;
+      });
     }
 
     // ── State ────────────────────────────────────────────────────────────
@@ -1629,15 +1787,18 @@
 
     // ── Render helpers ─────────────────────────────────────────────────
 
-    function renderProductChip(c, showLevel, productName) {
+    function renderProductChip(c, productName) {
       const src = productLogoUrl(c.productId);
       const abbr = (productName || c.productId).slice(0, 3);
-      const timing = showLevel
-        ? `<span class="timing-caption">${timingLabel(c.level)}</span>`
+      const timing = isBatchVendor(c.productId)
+        ? '<span class="timing-caption">Batch</span>'
         : '';
-      return `<div class="heatmap-product">
+      const isSelected = selected.has(c.productId);
+      const tooltipAttr = isSelected ? ` data-vendor-tooltip="${c.productId}"` : '';
+      const selectedClass = isSelected ? ' is-selected-vendor' : '';
+      return `<div class="heatmap-product${selectedClass}"${tooltipAttr}>
         <div class="product-chip">
-          ${src ? `<img src="${src}" alt="" />` : `<span class="abbr">${abbr}</span>`}
+          ${src ? `<img src="${src}" alt="" referrerpolicy="no-referrer" />` : `<span class="abbr">${abbr}</span>`}
         </div>
         ${timing}
       </div>`;
@@ -1654,10 +1815,9 @@
       if (enabled.length === 0) {
         return '<span class="muted-dash">No coverage</span>';
       }
-      const showLevel = TIMING_CATEGORIES.has(categoryId);
       return enabled.map((c) => {
         const name = productById[c.productId]?.name;
-        return renderProductChip(c, showLevel, name);
+        return renderProductChip(c, name);
       }).join('');
     }
 
@@ -1721,16 +1881,12 @@
           for (const p of list) {
             const isSelected = selected.has(p.id);
             const logo = productLogoUrl(p.id);
-            const timing = showTypeBadge(p.id) ? timingBadge(p.type === 'realtime' ? 'rt' : 'batch') : '';
-            const caps = [...(PRODUCT_TAXONOMY[p.id] || [])]
-              .map((id) => FRAUD_RISK_CATEGORIES.find((c) => c.id === id)?.label)
-              .filter(Boolean)
-              .slice(0, 3)
-              .join(' · ');
+            const timing = timingBadge(p.id);
+            const caps = vendorCapabilityLine(p.id);
             vendorHtml += `<article class="vendor-card${isSelected ? ' selected' : ''}" data-product="${p.id}">
               <div class="vendor-card-header">
                 <div class="vendor-card-logo">
-                  ${logo ? `<img src="${logo}" alt="${p.name}" />` : `<span class="name-fallback">${p.name}</span>`}
+                  ${logo ? `<img src="${logo}" alt="${p.name}" referrerpolicy="no-referrer" />` : `<span class="name-fallback">${p.name}</span>`}
                 </div>
                 <div class="vendor-card-meta">
                   <h3 class="vendor-card-name">${p.name}</h3>
@@ -1766,6 +1922,7 @@
       });
     }
 
+    bindVendorHeatmapTooltips();
     render();
   </script>
 </body>
